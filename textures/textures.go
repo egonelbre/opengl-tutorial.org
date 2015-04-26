@@ -1,4 +1,4 @@
-package main
+package textures
 
 import (
 	"fmt"
@@ -6,12 +6,13 @@ import (
 	"image/draw"
 	"os"
 
+	_ "image/jpeg"
 	_ "image/png"
 
 	"github.com/go-gl/gl/v4.1-core/gl"
 )
 
-func CreateTexture(filename string) (uint32, error) {
+func Load(filename string) (uint32, error) {
 	file, err := os.Open(filename)
 	if err != nil {
 		return 0, err

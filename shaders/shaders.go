@@ -1,13 +1,29 @@
-package main
+package shaders
 
 import (
 	"fmt"
+	"io/ioutil"
 	"strings"
 
 	_ "image/png"
 
 	"github.com/go-gl/gl/v4.1-core/gl"
 )
+
+func Load(vertexShaderFile, fragmentShaderFile string) (uint32, error) {
+	vertexShaderSource, err := ioutil.ReadFile(vertexShaderFile)
+	if err != nil {
+		return 0, err
+	}
+	fragmentShaderSource, err := ioutil.ReadFile(fragmentShaderFile)
+	if err != nil {
+		return 0, err
+	}
+
+	return CreateProgram(
+		string(vertexShaderSource)+"\x00",
+		string(fragmentShaderSource)+"\x00")
+}
 
 func CreateProgram(vertexShaderSource, fragmentShaderSource string) (uint32, error) {
 	vertexShader, err := CompileShader(vertexShaderSource, gl.VERTEX_SHADER)
