@@ -151,13 +151,6 @@ func main() {
 	gl.GenVertexArrays(1, &vao)
 	gl.BindVertexArray(vao)
 
-	texture, err := dds.LoadFile("cube.dds")
-	if err != nil {
-		log.Fatal(err)
-	}
-
-	checkerror()
-
 	// Load Model
 	data, err := obj.LoadFile("cube.obj")
 	if err != nil {
@@ -180,9 +173,16 @@ func main() {
 	gl.BindBuffer(gl.ARRAY_BUFFER, uvbo)
 	gl.BufferData(gl.ARRAY_BUFFER, len(data.UV)*4, gl.Ptr(data.UV), gl.STATIC_DRAW)
 
-	vertexUV := uint32(gl.GetAttribLocation(program, gl.Str("UV\x00")))
+	vertexUV := uint32(gl.GetAttribLocation(program, gl.Str("vertexUV\x00")))
 	gl.EnableVertexAttribArray(vertexUV)
 	gl.VertexAttribPointer(vertexUV, 2, gl.FLOAT, false, 0, gl.PtrOffset(0))
+
+	checkerror()
+
+	texture, err := dds.LoadFile("cube.dds")
+	if err != nil {
+		log.Fatal(err)
+	}
 
 	checkerror()
 
